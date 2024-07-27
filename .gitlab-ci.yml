@@ -1,0 +1,25 @@
+stages: 
+  # CI pipeline
+  - test
+  - build 
+  - deploy
+
+
+test-crawler:
+  # CI test 步驟
+  stage: test
+  # 使用與 Dockerfile 相同的作業系統
+  image: ubuntu:22.04
+  # 測試事前準備, 需要安裝環境
+  before_script: 
+    - apt-get update && apt-get install python3.10 -y && apt-get install python3-pip -y
+    - export LC_ALL=C.UTF-8 LANG=C.UTF-8
+    - pip install poetry
+    - poetry config virtualenvs.in-project true
+  # 實際執行測試
+  script:
+    - poetry run pytest --cov-report term-missing --cov-config=.coveragerc --cov=./finandata/ tests/
+  # 只有在 merge requests 的情況下才會運作此 CI
+  only:
+    refs:
+      - merge_requests

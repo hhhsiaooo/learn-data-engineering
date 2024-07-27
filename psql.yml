@@ -1,0 +1,24 @@
+version: "3.0"
+services:
+
+  postgresql:
+    image: postgres:13
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: test
+      POSTGRES_USER: hailey
+      POSTGRES_PASSWORD: dsp24756619
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    restart: always
+    networks:
+      - crawlerproject_dev  # 執行docker-compose創建的專案夾專用網路
+
+volumes:
+  postgres-data:
+    external: true # 連通之前創建的volumnes
+
+networks:
+  crawlerproject_dev:
+    external: true # 多個yml文件中的服務共享網路

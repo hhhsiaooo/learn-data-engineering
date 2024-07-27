@@ -1,0 +1,16 @@
+version: "3.0"
+services:
+
+  scheduler:
+    image: crawler:7.2.1
+    hostname: "twse"
+    command: poetry run python3.10 -m finandata.tasks.scheduler
+    restart: always
+    environment:
+      - TZ=Asia/Taipei
+    networks:
+      - crawlerproject_dev
+
+networks:
+  crawlerproject_dev:
+    external: true

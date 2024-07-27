@@ -1,0 +1,29 @@
+name: CI Pipeline
+
+on:
+# 對 main 發出 pull request 的時候執行工作流
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  test:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python 3.10
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.10
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install poetry
+          poetry config virtualenvs.in-project true
+          poetry install
+
+      - name: Run tests
+        run: poetry run pytest --cov-report term-missing --cov-config=.coveragerc --cov=./finandata/ tests/

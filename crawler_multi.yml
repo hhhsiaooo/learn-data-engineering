@@ -1,0 +1,36 @@
+version: "3.0"
+services:
+
+  crawler_twse:
+    image: crawler:7.2.1
+    hostname: "twse"
+    command: poetry run /usr/local/bin/celery -A finandata.tasks.worker worker --loglevel=info --concurrency=1  --hostname=%h -Q twse
+    restart: always
+    environment:
+      - TZ=Asia/Taipei
+    networks:
+      - crawlerproject_dev
+
+  crawler_tpex:
+    image: crawler:7.2.1
+    hostname: "tpex"
+    command: poetry run /usr/local/bin/celery -A finandata.tasks.worker worker --loglevel=info --concurrency=1  --hostname=%h -Q tpex
+    restart: always
+    environment:
+      - TZ=Asia/Taipei
+    networks:
+      - crawlerproject_dev
+
+  crawler_taifex:
+    image: crawler:7.2.1
+    hostname: "taifex"
+    command: poetry run /usr/local/bin/celery -A finandata.tasks.worker worker --loglevel=info --concurrency=1  --hostname=%h -Q taifex
+    restart: always
+    environment:
+      - TZ=Asia/Taipei
+    networks:
+      - crawlerproject_dev
+
+networks:
+  crawlerproject_dev:
+    external: true

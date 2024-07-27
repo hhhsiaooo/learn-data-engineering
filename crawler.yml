@@ -1,0 +1,15 @@
+version: "3.0"
+services:
+  crawler_twse:
+    image: crawler:7.2.1
+    hostname: "twse"
+    command: poetry run /usr/local/bin/celery -A finandata.tasks.worker worker --loglevel=info --concurrency=1  --hostname=%h -Q twse
+    restart: always
+    environment:
+      - TZ=Asia/Taipei
+    networks:
+      - crawlerproject_dev
+
+networks:
+  crawlerproject_dev:
+    external: true
