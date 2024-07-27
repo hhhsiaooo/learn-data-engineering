@@ -1,4 +1,4 @@
-name: CI Pipeline
+name: CI Pipeline test
 
 on:
 # 對 main 發出 pull request 的時候執行工作流
