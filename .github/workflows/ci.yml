@@ -28,3 +28,19 @@ jobs:
 
       - name: Run tests
         run: poetry run pytest --cov-report term-missing --cov-config=.coveragerc --cov=./finandata/ tests/
+
+  build-docker-image:
+    runs-on: ubuntu-22.04
+    needs: test
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Log in to Docker Hub
+        run: echo "${{ secrets.DOCKER_HUB_TOKEN }}" | docker login -u "haileyhhh" --password-stdin
+
+      - name: Build Docker image
+        run: docker build -f Dockerfile -t haileyhhh/crawler:0.1.0 .
+
+      - name: Push Docker image
+        run: docker push haileyhhh/crawler:0.1.0
